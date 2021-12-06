@@ -8,15 +8,8 @@ for line in input:
     points = [pointsRaw[0].split(','),pointsRaw[1].split(',')]
     lines.append(points)
 
-# print(lines)
-
 rowTemplate = []
 grid =[]
-
-def lineFilter(line):
-    return line[0][0] == line[1][0] or line[0][1] == line[1][1]
-
-filteredLines = list(filter(lineFilter, lines))
 
 for line in lines:
     x1 = int(line[0][0])
@@ -25,6 +18,7 @@ for line in lines:
     y2 = int(line[1][1])
     rowPos = max([x1, x2])
     colPos = max([y1, y2])
+    
     while len(rowTemplate) <= rowPos:
         rowTemplate.append(0)
         for row in grid:
@@ -43,15 +37,16 @@ for line in lines:
         for x in range(xs,xe + 1):
             grid[y1][x] += 1
     else:
-        print(line)
-        xe = max([x1,x2])
-        x = min([x1,x2])
-        ye = max([y1,y2])
-        y = min([y1,y2])
-        while x <= xe and y <= ye:
+        dx = x2 - x1
+        x = x2 if dx < 0 else x1
+        ys = y2 if dx < 0 else y1
+        ye = y1 if dx < 0 else y2
+        dy = ye - ys
+        y = ys
+        while x <= max([x1,x2]):
             grid[y][x] += 1
             x += 1
-            y +=1
+            y += -1 if dy < 0 else 1
             
 count = 0
 for line in grid:
